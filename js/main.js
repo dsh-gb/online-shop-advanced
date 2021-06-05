@@ -1,6 +1,32 @@
 'use strict';
 
+const urlAPI = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+const btnBusket = document.getElementById('busket');
+
 class Cart {
+    constructor(container = '.basket') {
+        this.container = container;
+        this.goods = [];
+        this._getCart()
+            .then(data => {
+                this.goods = [...data.contents];
+                this.render();
+            });
+    }
+
+    _getCart() {
+        return fetch(`${urlAPI}/getBasket.json`)
+            .then(result => result.json())
+            .catch(error => console.log(error))
+    }
+
+    render() {
+        const block = document.querySelector('.basket');
+        for (let product of this.goods) {
+            const productObj = new CartItem(product);
+            block.insertAdjacentHTML('beforeend', productObj.render());
+        }
+    }
 
     // добавить товар в корзину
     addCart() {
@@ -20,6 +46,22 @@ class Cart {
 };
 
 class CartItem {
+    constructor(product, img = 'img/photo-product.jpg') {
+        this.title = product.product_name;
+        this.price = product.price;
+        this.id = product.id_product;
+        this.quantity = product.quantity;
+        this.img = img;
+    }
+
+    render() {
+        return `<div class="product-item" data-id="${this.id}">
+                    <img class="product-item__img" src="${this.img}" alt="photo product">
+                    <h3>${this.title}</h3>
+                    <p>${this.price}</p>
+                    <p>Количество = ${this.quantity}</p>
+                </div>`
+    }
 
     // количество товара
     quantityItem() {
@@ -35,23 +77,23 @@ class CartItem {
     addToFavorite() {
 
     }
-
 };
 
 class ProductsList {
     constructor(container = '.products') {
         this.container = container;
         this.goods = [];
-        this._fetchProducts();
+        this._getProducts()
+            .then(data => {
+                this.goods = [...data];
+                this.render();
+            });
     }
 
-    _fetchProducts() {
-        this.goods = [
-            { id: 1, title: 'Notebook', price: 2000 },
-            { id: 2, title: 'Mouse', price: 20 },
-            { id: 3, title: 'Keyboard', price: 200 },
-            { id: 4, title: 'Gamepad', price: 50 }
-        ];
+    _getProducts() {
+        return fetch(`${urlAPI}/catalogData.json`)
+            .then(result => result.json())
+            .catch(error => console.log(error))
     }
 
     render() {
@@ -73,9 +115,9 @@ class ProductsList {
 
 class ProductItem {
     constructor(product, img = 'img/photo-product.jpg') {
-        this.title = product.title;
+        this.title = product.product_name;
         this.price = product.price;
-        this.id = product.id;
+        this.id = product.id_product;
         this.img = img;
     }
 
@@ -91,4 +133,8 @@ class ProductItem {
 
 let list = new ProductsList();
 list.render();
+
+let listBasket = new Cart();
+listBasket.render();
+
 console.log(list.allPriceProducts());
