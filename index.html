@@ -11,22 +11,46 @@
 </head>
 
 <body>
-    <header class="header">
-        <a href="cart.html">
-            <button id="busket" class="btn-cart" type="button">Корзина</button>
-        </a>
-    </header>
+    <div id="app">
+        <header class="header">
+            <form action="#" class="header__form-search" @submit.prevent="searchFilter()">
+                <input type="text" class="input-search" placeholder="поиск..." v-model="userSearch">
+            </form>
+            <a href="#">
+                <button class="header__cart-btn" type="button" @click="show = !show">Корзина</button>
+            </a>
+            <div class="cart" v-show="show">
+                <div class="cart-item" v-for="cartItem of cart">
+                    <img class="cart-item__img" :src="imgCatalog" alt="photo product">
+                    <div>
+                        <h3 class="cart-item__heading">{{ cartItem.product_name }}</h3>
+                        <p class="cart-item__text">Цена: {{ cartItem.price }}</p>
+                        <p class="cart-item__quantity">Количество: {{ cartItem.quantity }}</p>
+                        <button class="cart-item__btn" type="button" @click="remove(cartItem)">Удалить</button>
+                    </div>
+                </div>
+                <p class="cart__price" v-if="cart.length">Cумма к оплате: {{ cart.amount }}</p>
+                <p class="cart-item__info" v-show="!cart.length">Корзина пуста</p>
+            </div>
+        </header>
 
-    <main>
-        <h1 class="title">Наши товары</h1>
-        <div class="products">
+        <main>
+            <h1 class="title">Наши товары</h1>
+            <div class="products">
+                <div class="product-item" v-for="product of filterList">
+                    <img class="product-item__img" :src="imgCatalog" alt="photo product">
+                    <h3 class="product-item__heading">{{ product.product_name }}</h3>
+                    <p class="product-item__text">{{ product.price }}</p>
+                    <button class="product-item__btn" @click="addProduct(product)">Купить</button>
+                </div>
+            </div>
+        </main>
 
-        </div>
-    </main>
+        <footer class="footer">
+        </footer>
+    </div>
 
-    <footer class="footer">
-    </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/main.js"></script>
 </body>
 
