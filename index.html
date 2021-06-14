@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <p class="cart__price" v-if="cart.length">Cумма к оплате: {{ cart.amount }}</p>
-                <p class="cart-item__info" v-show="!cart.length">Корзина пуста</p>
+                <p class="cart-item__info" v-else>Корзина пуста</p>
             </div>
         </header>
 
