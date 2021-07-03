@@ -47,3 +47,9 @@
     margin: 15px 0 15px 0;
     font-size: 20px;
 }
+
+.basket {
+    display: flex;
+    justify-content: space-around;
+    
+}
