@@ -13,37 +13,14 @@
 <body>
     <div id="app">
         <header class="header">
-            <form action="#" class="header__form-search" @submit.prevent="searchFilter()">
-                <input type="text" class="input-search" placeholder="поиск..." v-model="userSearch">
-            </form>
-            <a href="#">
-                <button class="header__cart-btn" type="button" @click="show = !show">Корзина</button>
-            </a>
-            <div class="cart" v-show="show">
-                <div class="cart-item" v-for="cartItem of cart">
-                    <img class="cart-item__img" :src="imgCatalog" alt="photo product">
-                    <div>
-                        <h3 class="cart-item__heading">{{ cartItem.product_name }}</h3>
-                        <p class="cart-item__text">Цена: {{ cartItem.price }}</p>
-                        <p class="cart-item__quantity">Количество: {{ cartItem.quantity }}</p>
-                        <button class="cart-item__btn" type="button" @click="remove(cartItem)">Удалить</button>
-                    </div>
-                </div>
-                <p class="cart__price" v-if="cart.length">Cумма к оплате: {{ cart.amount }}</p>
-                <p class="cart-item__info" v-else>Корзина пуста</p>
-            </div>
+            <search></search>
+            <button class="header__cart-btn" type="button" @click="$refs.cart.show = !$refs.cart.show">Корзина</button>
+            <cart ref="cart"></cart>
         </header>
 
         <main>
             <h1 class="title">Наши товары</h1>
-            <div class="products">
-                <div class="product-item" v-for="product of filterList">
-                    <img class="product-item__img" :src="imgCatalog" alt="photo product">
-                    <h3 class="product-item__heading">{{ product.product_name }}</h3>
-                    <p class="product-item__text">{{ product.price }}</p>
-                    <button class="product-item__btn" @click="addProduct(product)">Купить</button>
-                </div>
-            </div>
+            <products ref="products"></products>
         </main>
 
         <footer class="footer">
@@ -51,6 +28,9 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/productComp.js"></script>
+    <script src="js/cartComp.js"></script>
+    <script src="js/searchComp.js"></script>
     <script src="js/main.js"></script>
 </body>
 
